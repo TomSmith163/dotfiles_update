@@ -1,0 +1,34 @@
+name: Update Shadowrocket Rules (Python)
+
+on:
+    schedule:
+        - cron: "0 0 * * *" # UTC 0 点 = 中国早上 8 点
+    workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            - name: Set up Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: "3.x"
+
+            - name: Install dependencies
+              run: pip install requests
+
+            - name: Run update script
+              run: python scripts/update_shadowrocket_rules.py
+
+            - name: Commit & Push changes
+              run: |
+                  git config --local user.email "github-actions@github.com"
+                  git config --local user.name "GitHub Actions"
+
+                  git add sr_cnip_ad.conf
+                  git commit -m "Auto update Shadowrocket rules (Python)" || echo "No changes"
+                  git push
