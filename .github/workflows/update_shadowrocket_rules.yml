@@ -30,9 +30,13 @@ jobs:
 
             - name: Commit & Push changes
               run: |
-                  git config --local user.email "github-actions@github.com"
-                  git config --local user.name "GitHub Actions"
+                  git config --local user.email "github-actions[bot]@users.noreply.github.com"
+                  git config --local user.name "github-actions[bot]"
 
                   git add dotfiles/sr_cnip_ad.conf
                   git commit -m "Auto update Shadowrocket rules (Python)" || echo "No changes"
+
+                  git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
+                  git push origin HEAD:mainhon)" || echo "No changes"
                   git push
