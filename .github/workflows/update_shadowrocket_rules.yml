@@ -42,7 +42,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
 
           # 把要提交的文件加入暂存区（请确认脚本生成的文件路径）
-          git add dotfiles/sr_cnip_ad.conf || true
+          git add dotfiles/sr_cnip_ad_m.conf || true
 
           # 提交（无改动不报错）
           git commit -m "Auto update Shadowrocket rules (Python)" || echo "No changes to commit"
