@@ -29,6 +29,6 @@ jobs:
                   git config --local user.email "github-actions@github.com"
                   git config --local user.name "GitHub Actions"
 
-                  git add sr_cnip_ad.conf
+                  git add dotfiles/sr_cnip_ad.conf
                   git commit -m "Auto update Shadowrocket rules (Python)" || echo "No changes"
                   git push
