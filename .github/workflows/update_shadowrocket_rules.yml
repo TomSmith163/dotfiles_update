@@ -2,7 +2,8 @@ name: Update Shadowrocket Rules (Python)
 
 on:
     schedule:
-        - cron: "0 0 * * *" # UTC 0 点 = 中国早上 8 点
+      # 中国早上 8:30
+        - cron: "30 0 * * *"
     workflow_dispatch:
 
 jobs:
