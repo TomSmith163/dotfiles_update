@@ -7,7 +7,7 @@ OUTPUT = "sr_cnip_ad_m.conf"
 GROUP = """
 [Proxy Group]
 
-CORE = select,香港节点,台湾节点,日本节点,policy-select-name=香港节点
+CORE = load-balance,香港节点,台湾节点,日本节点,policy-select-name=香港节点
 
 香港节点 = url-test,url=http://www.gstatic.com/generate_204,interval=600,tolerance=0,timeout=5,select=0,policy-regex-filter=HK|Hong|hong|香港|深港|沪港|京港|港
 台湾节点 = url-test,url=http://www.gstatic.com/generate_204,interval=600,tolerance=0,timeout=5,select=0,policy-regex-filter=TW|Taiwan|taiwan|台湾|台北|台中|新北|彰化
