@@ -35,6 +35,9 @@ jobs:
       - name: Run update script
         run: python scripts/update_shadowrocket_rules.py
 
+      - name: Check generated files
+        run: ls -l dotfiles/
+
       - name: Commit & Push changes
         run: |
           # 配置提交者信息
