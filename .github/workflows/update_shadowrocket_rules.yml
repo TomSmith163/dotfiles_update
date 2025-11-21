@@ -1,42 +1,51 @@
 name: Update Shadowrocket Rules (Python)
 
 on:
-    schedule:
-      # 中国早上 8:30
-        - cron: "30 0 * * *"
-    push:
-        branches:
-          - main
-    workflow_dispatch:
+  schedule:
+    # 中国早上 08:30（cron 用 UTC，请根据需要调整）
+    - cron: "30 0 * * *"
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v3
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          # 确保 checkout 使用 GITHUB_TOKEN，这样后续 git push 可以使用同一凭据
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
-            - name: Set up Python
-              uses: actions/setup-python@v4
-              with:
-                  python-version: "3.x"
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
 
-            - name: Install dependencies
-              run: pip install requests
+      - name: Install dependencies
+        run: pip install requests
 
-            - name: Run update script
-              run: python scripts/update_shadowrocket_rules.py
+      - name: Run update script
+        run: python scripts/update_shadowrocket_rules.py
 
-            - name: Commit & Push changes
-              run: |
-                  git config --local user.email "github-actions[bot]@users.noreply.github.com"
-                  git config --local user.name "github-actions[bot]"
+      - name: Commit & Push changes
+        run: |
+          # 配置提交者信息
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
 
-                  git add dotfiles/sr_cnip_ad.conf
-                  git commit -m "Auto update Shadowrocket rules (Python)" || echo "No changes"
+          # 把要提交的文件加入暂存区（请确认脚本生成的文件路径）
+          git add dotfiles/sr_cnip_ad.conf || true
 
-                  git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          # 提交（无改动不报错）
+          git commit -m "Auto update Shadowrocket rules (Python)" || echo "No changes to commit"
 
-                  git push origin HEAD:mainhon)" || echo "No changes"
-                  git push
+          # 使用 checkout 提供的凭据可以直接 push 回触发仓库
+          git push origin HEAD:main || echo "Push failed"
