@@ -1,4 +1,5 @@
 import requests
+import time
 
 URL = "https://johnshall.github.io/Shadowrocket-ADBlock-Rules-Forever/sr_cnip_ad.conf"
 ORIGINAL = "sr_cnip_ad.conf"
@@ -42,6 +43,8 @@ def main():
     with open("dotfiles/" + OUTPUT, "a", encoding="utf-8") as f:
         f.write("\n")
         f.write(GROUP)
+        f.write("\n")
+        f.write(f"# Updated at {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}\n")
     print(f"Updated file: dotfiles/{OUTPUT}")
 
 if __name__ == "__main__":
